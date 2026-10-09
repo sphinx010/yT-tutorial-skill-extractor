@@ -7,6 +7,15 @@ Streamlined YouTube tutorial extractor powered by Gemini native multimodal video
 import os
 import sys
 import argparse
+
+# Ensure UTF-8 output on Windows consoles
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from google import genai
 from google.genai import types
 
@@ -70,7 +79,7 @@ def extract_spec(video_source: str, focus: str = "", output_file: str = "SPEC.md
         video_part = uploaded_file
 
     # Fast models fall forward automatically
-    models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+    models = ["gemini-2.5-flash", "gemini-3.8-flash", "gemini-flash-latest"]
     
     response = None
     for model_name in models:
@@ -84,7 +93,7 @@ def extract_spec(video_source: str, focus: str = "", output_file: str = "SPEC.md
                 ],
             )
             if response and response.text:
-                print(f"[✓] Extraction succeeded with {model_name}.")
+                print(f"[OK] Extraction succeeded with {model_name}.")
                 break
         except Exception as e:
             print(f"[-] {model_name} failed: {e}. Trying fallback...")
@@ -100,7 +109,7 @@ def extract_spec(video_source: str, focus: str = "", output_file: str = "SPEC.md
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(response.text)
 
-    print(f"[✓] Spec generated successfully and written to: {output_file}")
+    print(f"[OK] Spec generated successfully and written to: {output_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract an agent build spec from a YouTube URL or video file.")

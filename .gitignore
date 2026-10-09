@@ -10,8 +10,9 @@ env/
 venv/
 ENV/
 
-# Temporary outputs & logs
+# Temporary outputs & local skills
 SPEC.md
+.agents/
 *.log
 *.tmp
 *.mp4

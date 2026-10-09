@@ -9,6 +9,14 @@ import sys
 import re
 import argparse
 
+# Ensure UTF-8 output on Windows consoles
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 SKILL_TEMPLATE = """---
 name: {skill_name}
 description: {skill_description}
@@ -119,9 +127,9 @@ def compile_skill(spec_path: str, skill_name: str, target_dir: str = None):
     with open(provenance_file, "w", encoding="utf-8") as f:
         f.write(spec_content)
 
-    print(f"[✓] Skill successfully compiled to: {skill_file}")
-    print(f"[✓] Provenance spec saved to: {provenance_file}")
-    print(f"[✓] Ready for live execution by Antigravity, Claude Code, Cursor, and Codex.")
+    print(f"[OK] Skill successfully compiled to: {skill_file}")
+    print(f"[OK] Provenance spec saved to: {provenance_file}")
+    print(f"[OK] Ready for live execution by Antigravity, Claude Code, Cursor, and Codex.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compile SPEC.md into an active Agent Skill.")
